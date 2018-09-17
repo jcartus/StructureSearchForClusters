@@ -101,7 +101,7 @@ def evaluateFitness(individual, meta):
 
     mol = build_molecule_from_genome(individual, meta)
     
-    mf = scf.RHF(mol)
+    mf = scf.UHF(mol)
     mf.verbose = 0
     E = mf.scf()
     
@@ -124,6 +124,6 @@ def plot_data(energies, bins):
     x = (bins[:-1] + bins[1:]) / 2
     #x = bins[:-1]
 
-    plt.bar(x, energies)
+    plt.bar(x, energies, width=0.5)
     plt.xlabel("Energies / E_h")
     plt.ylabel("Absolute frequency / 1")
