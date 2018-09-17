@@ -110,7 +110,7 @@ def find_best_geometry(molecule_meta, params):
             utilities.calculate_fitness_distribution(fitness_values, bins) 
         
         #--- print out information on the energy ---
-        print("Generation {0} finished.\n - E_mean = {1}".format(
+        print("Generation {0} finished.\n - E_mean = {1}\n".format(
             i+1, 
             np.mean(fitness_values)
         ))
@@ -126,6 +126,6 @@ def find_best_geometry(molecule_meta, params):
 
     #---
 
-    return fitness_distribution, bin
+    return fitness_distribution, bins
 
 

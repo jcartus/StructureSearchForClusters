@@ -1,5 +1,6 @@
 import utilities
 import argparse
+import matplotlib.pyplot as plt
 
 import GA as ga
 
@@ -28,10 +29,11 @@ def main(zMatrix):
 
     params = {
         "n_population": 10,
-        "n_fitness_bins": 20,
+        "n_fitness_bins": 50,
         "n_generations": 10,
         "probability_crossing": 0.5,
         "probability_mutation": 0.2,
+
     }
 
     energies, bins = ga.find_best_geometry(molecule_meta, params)

@@ -77,7 +77,7 @@ def build_molecule_from_genome(genome, meta):
     """From the genome create a pyscf molecule for energy calculation"""
     
     mol = gto.Mole()
-    mol.atm = create_z_matrix(
+    mol.atom = create_z_matrix(
         meta.first_atom,
         meta.second_atom,
         meta.third_atom,
@@ -120,8 +120,10 @@ def calculate_fitness_distribution(energies, bins):
 
 
 def plot_data(energies, bins):
+    bins = np.asarray(bins)
     x = (bins[:-1] + bins[1:]) / 2
+    #x = bins[:-1]
 
-    plt.bar(x, bins)
+    plt.bar(x, energies)
     plt.xlabel("Energies / E_h")
     plt.ylabel("Absolute frequency / 1")
