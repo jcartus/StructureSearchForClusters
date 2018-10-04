@@ -23,18 +23,14 @@ H 1 1.08
 H 1 1.08 2 109.0
 """
 
-Be5 = """
-0 1
-Be 
+Be5 = """Be 
 Be      1        1.34938
 Be      1        1.33697     2       76.21984
 Be      3        1.09958     1       58.28930     2       52.72671
 Be      3        0.86090     1       55.17264     2      340.85847
 """
 
-Au13 = """
-0 1
-Au 
+Au13 = """Au 
 Au      1        2.94793
 Au      2        1.42838     1       52.10134
 Au      2        1.57412     1      127.90754     3       71.31932
@@ -57,16 +53,16 @@ def main(zMatrix):
     molecule_meta = utilities.MoleculeMetaData(zMatrix)
 
     params = {
-        "n_population": 10,
+        "n_population": 100,
         "threshold_energy_difference": 1e-8,
-        "n_generations": 10,
+        "n_generations": 100,
         "probability_crossing": 0.5,
         "probability_mutation": 0.2,
     }
 
     counter = ga.find_best_geometry(molecule_meta, params)
 
-    print("### E_min = {0} found {1} times".format(counter.E_min, counter.count))
+    print("--> E_min = {0} found {1} times".format(counter.E_min, counter.count))
 
 
 
