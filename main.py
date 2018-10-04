@@ -29,18 +29,15 @@ def main(zMatrix):
 
     params = {
         "n_population": 10,
-        "n_fitness_bins": 50,
+        "threshold_energy_difference": 1e-8,
         "n_generations": 10,
         "probability_crossing": 0.5,
         "probability_mutation": 0.2,
-
     }
 
-    energies, bins = ga.find_best_geometry(molecule_meta, params)
+    counter = ga.find_best_geometry(molecule_meta, params)
 
-    utilities.plot_data(energies, bins)
-
-    plt.show()
+    print("### E_min = {0} found {1} times".format(counter.E_min, counter.count))
 
 
 

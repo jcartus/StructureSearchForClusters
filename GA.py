@@ -55,10 +55,9 @@ def find_best_geometry(molecule_meta, params):
     for ind, fit in zip(population, fitness_values):
         ind.fitness.values = fit
 
-    fitness_distribution = utilities.Distribution(
-        fitness_values, 
-        params["n_fitness_bins"]
-    )
+    counter = utilities.MinEnergyStateCounter(params["threshold_energy_difference"])
+
+    counter.update(fitness_values)
     #---
 
     #--- Print information ---
@@ -106,7 +105,7 @@ def find_best_geometry(molecule_meta, params):
         fitness_values = [ind.fitness.values[0] for ind in population]
         
         # updates fitness distributions
-        fitness_distribution.update(fitness_values)
+        counter.update(fitness_values)
         
         #--- print out information on the energy ---
         print("Generation {0} finished.\n - E_mean = {1}\n".format(
@@ -125,6 +124,6 @@ def find_best_geometry(molecule_meta, params):
 
     #---
 
-    return fitness_distribution
+    return counter
 
 

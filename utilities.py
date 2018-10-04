@@ -48,6 +48,23 @@ class MoleculeMetaData(object):
             self.genome += [float(split[2]), float(split[4]), float(split[6])]
 
 
+class MinEnergyStateCounter(object):
+
+    def __init__(self, delta):
+
+        self.delta = delta
+        self.E_min = 1e10
+        self.count = 0
+
+    def update(self, energies):
+
+        if np.abs(np.min(energies) - self.E_min) < self.delta:
+            self.count += 1
+        else:
+            self.E_min = np.min(energies)
+            self.count = 1
+
+
 def create_z_matrix(first_atom, second_atom, third_atom, species, genome):
     """Create the z-matrix string for a genome"""
     matrix_str = first_atom + "\n"
@@ -119,11 +136,67 @@ def calculate_fitness_distribution(energies, bins):
     return fitness_distribution
 
 
-def plot_data(energies, bins):
-    bins = np.asarray(bins)
+def plot_data(distribution):
+    bins = np.asarray(distribution.bins)
     x = (bins[:-1] + bins[1:]) / 2
     #x = bins[:-1]
 
-    plt.bar(x, energies, width=0.5)
+    plt.bar(x, distribution.energies, width=0.8*distribution.energy_diff)
     plt.xlabel("Energies / E_h")
     plt.ylabel("Absolute frequency / 1")
+
+class Distribution(object):
+
+    def __init__(self, energies, number_on_bins):
+
+        self.offset = np.min(energies)
+
+        self.energies, self.bins = self.initial_histogram(
+            energies - self.offset,
+            number_on_bins
+        )
+
+        self.energy_diff = np.mean(np.diff(self.bins - self.offset))
+
+    def initial_histogram(self, energies, number_on_bins):
+
+        return np.histogram(
+            np.array(energies).flatten(), 
+            bins=number_on_bins, 
+        )
+
+    def update(self, energies):
+
+        for e in (np.array(energies) - self.offset):
+            
+            #--- addd missing bins ---
+            if e < self.bins[0]:
+
+                n_missing_bins = np.ceil((self.bins[0] - e) / self.energy_diff)
+
+                missing_bins = \
+                    np.arange(n_missing_bins, 0, -1) * self.energy_diff + self.bins[0]
+
+                self.bins = np.concatenate([missing_bins, self.bins])
+                self.energies = np.concatenate([self.energies, np.zeros(len(missing_bins))])
+
+            elif e > self.bins[-1]:
+
+                n_missing_bins = np.ceil((-self.bins[-1] + e) / self.energy_diff)
+
+                missing_bins = \
+                    np.arange(n_missing_bins + 1) * self.energy_diff + self.bins[-1]
+
+                self.bins = np.concatenate([missing_bins, self.bins])
+                self.energies = np.concatenate([np.zeros(len(missing_bins)), self.energies])
+
+            #---
+
+
+            # if in nth bin, n bin boundaries will be smaller, thus index=n-1
+            self.energies[np.sum(e > self.bins) - 1] += 1
+            
+
+
+
+    
