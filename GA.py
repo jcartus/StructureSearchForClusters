@@ -55,9 +55,9 @@ def find_best_geometry(molecule_meta, params):
     for ind, fit in zip(population, fitness_values):
         ind.fitness.values = fit
 
-    fitness_distribution, bins = np.histogram(
-        np.array(fitness_values).flatten(),
-        bins=params["n_fitness_bins"]
+    fitness_distribution = utilities.Distribution(
+        fitness_values, 
+        params["n_fitness_bins"]
     )
     #---
 
@@ -106,8 +106,7 @@ def find_best_geometry(molecule_meta, params):
         fitness_values = [ind.fitness.values[0] for ind in population]
         
         # updates fitness distributions
-        fitness_distribution += \
-            utilities.calculate_fitness_distribution(fitness_values, bins) 
+        fitness_distribution.update(fitness_values)
         
         #--- print out information on the energy ---
         print("Generation {0} finished.\n - E_mean = {1}\n".format(
@@ -126,6 +125,6 @@ def find_best_geometry(molecule_meta, params):
 
     #---
 
-    return fitness_distribution, bins
+    return fitness_distribution
 
 
