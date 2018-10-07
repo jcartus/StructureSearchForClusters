@@ -53,9 +53,9 @@ def main(zMatrix):
     molecule_meta = utilities.MoleculeMetaData(zMatrix)
 
     params = {
-        "n_population": 100,
+        "n_population": 10,
         "threshold_energy_difference": 1e-8,
-        "n_generations": 100,
+        "n_generations": 3,
         "probability_crossing": 0.5,
         "probability_mutation": 0.2,
     }
@@ -64,9 +64,10 @@ def main(zMatrix):
 
     print("--> E_min = {0} found {1} times".format(counter.E_min, counter.count))
 
+    utilities.plot_genome(counter.best_genome, molecule_meta)
 
-
+    plt.show()
     
 if __name__ == '__main__':
-    main(Be5)
+    main(CH4)
 

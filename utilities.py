@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from pyscf import gto, scf
 import random
 
+from deap import tools
+
 plt.style.use("seaborn")
 
 
@@ -25,7 +27,7 @@ class MoleculeMetaData(object):
 
         if len(lines) < 4:
             raise ValueError("Molecule must have 4 atoms at least!")
-        
+
         # first line
         self.first_atom = lines[0].split()[0]
         
@@ -48,6 +50,7 @@ class MoleculeMetaData(object):
             self.genome += [float(split[2]), float(split[4]), float(split[6])]
 
 
+
 class MinEnergyStateCounter(object):
 
     def __init__(self, delta):
@@ -56,13 +59,19 @@ class MinEnergyStateCounter(object):
         self.E_min = 1e10
         self.count = 0
 
-    def update(self, energies):
+        self.best_genome = None
+
+    def update(self, energies, population):
 
         if np.abs(np.min(energies) - self.E_min) < self.delta:
             self.count += 1
         else:
             self.E_min = np.min(energies)
             self.count = 1
+            self.best_genome = tools.selBest(population, 1)[0]
+
+
+            print(" - New Minimum found: {0}\n".format(self.E_min))
 
 
 def create_z_matrix(first_atom, second_atom, third_atom, species, genome):
@@ -101,6 +110,8 @@ def build_molecule_from_genome(genome, meta):
         meta.species,
         genome
     )
+
+    mol.unit = "Angstrom"
     
     mol.build()
     
@@ -135,6 +146,48 @@ def calculate_fitness_distribution(energies, bins):
 
     return fitness_distribution
 
+def plot_genome(genome, molecule_meta):
+    from mpl_toolkits.mplot3d import Axes3D
+    
+    #--- calculate carthsian coordinates of final genome ---
+    mol = build_molecule_from_genome(genome, molecule_meta)
+
+    # sort atoms by species
+    geometries = {}
+    for i in range(mol.natm):
+        species = mol.atom_pure_symbol(i)
+        pos = mol.atom_coord(i)
+        
+        stored = positions = geometries.get(species, [])
+        stored.append(list(pos))
+        geometries.update({species: stored})
+    #---
+     
+    #--- plot ---
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    # for python 2 & 3 compatibility
+    for (species, positions) in zip(geometries.keys(), geometries.values()):
+        
+        positions = np.asarray(positions)
+        print(positions)
+        ax.scatter(
+            positions[:, 0], 
+            positions[:, 1], 
+            positions[:, 2], 
+            label=species,
+            marker="o",
+            s=200
+        )
+
+    ax.set_xlabel("x axis / bohr")
+    ax.set_ylabel("y axis / bohr")
+    ax.set_zlabel("z axis / bohr")
+
+    ax.legend()
+    ax.set_title("Minimum Geometry")
+    #---
 
 def plot_data(distribution):
     bins = np.asarray(distribution.bins)
@@ -144,58 +197,6 @@ def plot_data(distribution):
     plt.bar(x, distribution.energies, width=0.8*distribution.energy_diff)
     plt.xlabel("Energies / E_h")
     plt.ylabel("Absolute frequency / 1")
-
-class Distribution(object):
-
-    def __init__(self, energies, number_on_bins):
-
-        self.offset = np.min(energies)
-
-        self.energies, self.bins = self.initial_histogram(
-            energies - self.offset,
-            number_on_bins
-        )
-
-        self.energy_diff = np.mean(np.diff(self.bins - self.offset))
-
-    def initial_histogram(self, energies, number_on_bins):
-
-        return np.histogram(
-            np.array(energies).flatten(), 
-            bins=number_on_bins, 
-        )
-
-    def update(self, energies):
-
-        for e in (np.array(energies) - self.offset):
-            
-            #--- addd missing bins ---
-            if e < self.bins[0]:
-
-                n_missing_bins = np.ceil((self.bins[0] - e) / self.energy_diff)
-
-                missing_bins = \
-                    np.arange(n_missing_bins, 0, -1) * self.energy_diff + self.bins[0]
-
-                self.bins = np.concatenate([missing_bins, self.bins])
-                self.energies = np.concatenate([self.energies, np.zeros(len(missing_bins))])
-
-            elif e > self.bins[-1]:
-
-                n_missing_bins = np.ceil((-self.bins[-1] + e) / self.energy_diff)
-
-                missing_bins = \
-                    np.arange(n_missing_bins + 1) * self.energy_diff + self.bins[-1]
-
-                self.bins = np.concatenate([missing_bins, self.bins])
-                self.energies = np.concatenate([np.zeros(len(missing_bins)), self.energies])
-
-            #---
-
-
-            # if in nth bin, n bin boundaries will be smaller, thus index=n-1
-            self.energies[np.sum(e > self.bins) - 1] += 1
-            
 
 
 

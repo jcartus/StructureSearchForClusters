@@ -57,13 +57,13 @@ def find_best_geometry(molecule_meta, params):
 
     counter = utilities.MinEnergyStateCounter(params["threshold_energy_difference"])
 
-    counter.update(fitness_values)
+    counter.update(fitness_values, population)
     #---
 
     #--- Print information ---
     #TODO print infos about initial population
     print(
-        "Initial population minimal energy: {0}".format(
+        "Initial population minimal energy: {0} / Hartree".format(
             tools.selBest(population, 1)[0].fitness.values
         )
     )
@@ -104,24 +104,17 @@ def find_best_geometry(molecule_meta, params):
         # update list of fitness value
         fitness_values = [ind.fitness.values[0] for ind in population]
         
-        # updates fitness distributions
-        counter.update(fitness_values)
+
         
         #--- print out information on the energy ---
-        print("Generation {0} finished.\n - E_mean = {1}\n".format(
+        print("Generation {0} finished.\n - E_mean = {1} / Hartree\n".format(
             i+1, 
             np.mean(fitness_values)
         ))
         #---
-        
-        # TODO convergence criterium
-        #if np.abs(E - E_old) < CONVERGENCE_THRESHOLD:
-        #    print("\n\nCONVERGED!\n")
-        #    break
-        #
-        #else:
-        #    E_old = E
 
+        # updates fitness distributions
+        counter.update(fitness_values, population)
     #---
 
     return counter
