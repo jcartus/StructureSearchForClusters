@@ -171,7 +171,7 @@ def plot_genome(genome, molecule_meta):
     for (species, positions) in zip(geometries.keys(), geometries.values()):
         
         positions = np.asarray(positions)
-        print(positions)
+
         ax.scatter(
             positions[:, 0], 
             positions[:, 1], 
