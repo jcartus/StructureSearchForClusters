@@ -11,7 +11,10 @@ plt.style.use("seaborn")
 
 
 class MoleculeMetaData(object):
-    def __init__(self, zMatrix):
+    def __init__(self, basis, zMatrix):
+        
+        self.basis = basis
+
         self.first_atom = None
         self.second_atom = None
         self.third_atom = None
@@ -112,6 +115,7 @@ def build_molecule_from_genome(genome, meta):
     )
 
     mol.unit = "Angstrom"
+    mol.basis = meta.basis
     
     mol.build()
     
@@ -129,11 +133,16 @@ def evaluateFitness(individual, meta):
 
     mol = build_molecule_from_genome(individual, meta)
     
-    mf = scf.UHF(mol)
-    mf.verbose = 0
-    E = mf.scf()
-    
-    # has to be a tuple (because of syntax)
+    try:
+        mf = scf.UHF(mol)
+        mf.verbose = 0
+        E = mf.scf()
+    except Exception as ex:
+        print("Problem during SCF calculation: " +  str(ex))
+        E = 1e10
+
+
+    # has to be a tuple (because of syntax of library)
     return E,
 
 def calculate_fitness_distribution(energies, bins):
