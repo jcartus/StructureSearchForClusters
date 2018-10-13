@@ -112,6 +112,7 @@ def main(data):
 
     utilities.plot_genome(counter.best_genome, molecule_meta)
 
+    plt.savefig("result.pdf")
     plt.show()
     
 if __name__ == '__main__':
