@@ -69,12 +69,16 @@ class MinEnergyStateCounter(object):
         if np.abs(np.min(energies) - self.E_min) < self.delta:
             self.count += 1
         else:
+            E_old = self.E_min
             self.E_min = np.min(energies)
             self.count = 1
             self.best_genome = tools.selBest(population, 1)[0]
 
 
-            print(" - New Minimum found: {0}\n".format(self.E_min))
+            print(" - New Minimum found: {:3.5f} (Diff.: {:1.2e})\n".format(
+                self.E_min,
+                E_old - self.E_min
+            ))
 
 
 def create_z_matrix(first_atom, second_atom, third_atom, species, genome):
@@ -121,10 +125,10 @@ def build_molecule_from_genome(genome, meta):
     
     return mol
 
-def init_individual(meta):
+def init_individual(meta, noise=0.3):
     """Initialize an individual of the population by adding noise to the 
     genome of the guess structure"""
-    return [gene + random.gauss(0, 0.1 * gene) for gene in meta.genome]
+    return [abs(gene + random.gauss(0, noise * gene)) for gene in meta.genome]
 
 
 def evaluateFitness(individual, meta):

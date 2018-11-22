@@ -26,7 +26,10 @@ def find_best_geometry(molecule_meta, params):
         "init_individual", 
         tools.initIterate, 
         creator.Individual, 
-        lambda: utilities.init_individual(molecule_meta)
+        lambda: utilities.init_individual(
+            molecule_meta, 
+            params["noise_initial_population"]
+        )
     )
 
     toolbox.register(
