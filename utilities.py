@@ -125,22 +125,113 @@ def build_molecule_from_genome(genome, meta):
     
     return mol
 
-def init_individual(meta, noise=0.3):
-    """Initialize an individual of the population by adding noise to the 
-    genome of the guess structure"""
-    return [abs(gene + random.gauss(0, noise * gene)) for gene in meta.genome]
+def mutate_individual(genome, noise=0.3, gene_mutation_probability=0.3):
+    """Add some noise to a genome (and then take the absolute value) 
+    to yield a mutated individual. Absolute value is taken to ensure the 
+    resulting values are valid for z-matrix.
+    Used for mutation and initialisation.
+    
+    Args:
+     - genome <list<float>>: list of genes to be mutated.
+     - noise <float>: fraction of gene to used a variance for the noise 
+        that is added as mutation.
+     - gene_mutation_probability <float>: probability for each individual gene 
+        to be mutated.
+
+    Returns:
+     - <list<float>>: mutated genome.
+    """
+    
+    mutated_genome = []
+    for gene in genome:
+        
+        if random.random() < gene_mutation_probability: 
+            mutated_gene = abs(gene + random.gauss(0, noise * gene))
+        else:
+            mutated_gene = gene
+        
+        mutated_genome.append(mutated_gene)
+
+    return [abs(gene + random.gauss(0, noise * gene)) for gene in genome]
+
+def rhf_energy(molecule):
+    """Perform unrestricted HF calculation to evalute the energy of a molecule.
+    Args:
+     - molecule <pyscf.gto.Mole>: molecule to be evaluated.
+
+    Return:
+     - <float>: energy of the molecule.
+    """
+
+    mf = scf.RHF(molecule)
+    mf.verbose = 0
+    E = mf.scf()
+
+    return E
+
+def uhf_energy(molecule):
+    """Perform unrestricted HF calculation to evalute the energy of a molecule.
+    Args:
+     - molecule <pyscf.gto.Mole>: molecule to be evaluated.
+
+    Returns:
+     - <float>: energy of the molecule.
+    """
+
+    mf = scf.UHF(molecule)
+    mf.verbose = 0
+    E = mf.scf()
+
+    return E
+
+def lennard_jones(r, sigma, epsilon):
+    """LJ Potential. https://en.wikipedia.org/wiki/Lennard-Jones_potential"""
+
+    V = 4 * epsilon * (
+        (sigma / r)**12 - (sigma / r)**6
+    )
+
+    return V
+
+def lennard_jones_energy(molecule, sigma, epsilon):
+    """Calculate energy of lennard jones potential
+    Args:
+     - molecule <pyscf.gto.Mole>: molecule to be evaluate.
+     - sigma <float>: sigma param of LJ-potential.
+     - epsilon <float>: epsilon param of LJ-potential.
+
+    Returns:
+     - <float>: energy of molecule
+    """
+
+    E = 0
+    
+    for i in range(molecule.natm):
+        for j in range(molecule.natm):
+
+            if j >= i:
+                continue
+            
+            r = np.sqrt(np.sum(
+                (
+                    np.array(molecule.atom_coord(i)) - \
+                    np.array(molecule.atom_coord(j))
+                )**2
+            ))
+
+            E += lennard_jones(r, sigma, epsilon)
+
+    return E
 
 
-def evaluateFitness(individual, meta):
+def evaluateFitness(individual, meta, fitness_callback=uhf_energy):
     """Calculate the energy of an electron. This will be used as fitness
     function for the GA."""
 
     mol = build_molecule_from_genome(individual, meta)
     
     try:
-        mf = scf.UHF(mol)
-        mf.verbose = 0
-        E = mf.scf()
+        E = fitness_callback(mol)
     except Exception as ex:
         print("Problem during SCF calculation: " +  str(ex))
         E = 1e10
@@ -174,6 +265,8 @@ def plot_genome(genome, molecule_meta):
         stored = positions = geometries.get(species, [])
         stored.append(list(pos))
         geometries.update({species: stored})
+
+        print(species + " " + " ".join(list(map(str, pos))))
     #---
      
     #--- plot ---

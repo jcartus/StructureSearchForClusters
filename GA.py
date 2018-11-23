@@ -26,8 +26,8 @@ def find_best_geometry(molecule_meta, params):
         "init_individual", 
         tools.initIterate, 
         creator.Individual, 
-        lambda: utilities.init_individual(
-            molecule_meta, 
+        lambda: utilities.mutate_individual(
+            molecule_meta.genome, 
             params["noise_initial_population"]
         )
     )
@@ -41,14 +41,28 @@ def find_best_geometry(molecule_meta, params):
     #---
 
     # register fitness function
-    toolbox.register("evaluate", utilities.evaluateFitness, meta=molecule_meta)
+    toolbox.register(
+        "evaluate", 
+        utilities.evaluateFitness, 
+        meta=molecule_meta,
+        fitness_callback=params["fitness_callback"]    
+    )
     
     #--- register genetic functions ---
     toolbox.register("mate", tools.cxTwoPoint)
 
     # alter gene with 0.05 % probability (w/ noise)
-    toolbox.register("mutate", tools.mutGaussian, mu=0, sigma=1, indpb=0.05) # TODO mutation noise should be proportional to gene value!
-    toolbox.register("select", tools.selTournament, tournsize=3)
+    toolbox.register(
+        "mutate", 
+        utilities.mutate_individual, 
+        noise=params["noise_mutation"], 
+        gene_mutation_probability=params["individual_gene_probability_mutation"]
+    )
+    toolbox.register(
+        "select", 
+        tools.selTournament, 
+        tournsize=params["tournament_size"]
+    )
     #---
 
     #--- create initial population and calculate fitness ---
@@ -92,7 +106,7 @@ def find_best_geometry(molecule_meta, params):
                 
         # do mutation
         for mutant in offspring:
-            if random.random() < params["probability_mutation"]:
+            if random.random() < params["probability_mutation"]: 
                 toolbox.mutate(mutant)
                 del mutant.fitness.values
         
