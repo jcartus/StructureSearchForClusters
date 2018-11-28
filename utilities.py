@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from pyscf import gto, scf
-import random
+import random, time
 
 from deap import tools
 
@@ -221,7 +221,7 @@ def lennard_jones_energy(molecule, sigma, epsilon):
 
             E += lennard_jones(r, sigma, epsilon)
 
-    return E
+    return E / molecule.natm
 
 
 def evaluateFitness(individual, meta, fitness_callback=uhf_energy):
@@ -305,5 +305,30 @@ def plot_data(distribution):
     plt.ylabel("Absolute frequency / 1")
 
 
-
+class Timer(object):
+    """This class is used to log measure the time it takes the algorithm to 
+    finish
     
+    Properties:
+     - start_time <float>: time in ms since begin of the epoch until the start.
+    """
+
+    def __init__(self):
+
+        self.start_time = None
+
+    def start(self):
+        """Start the timer"""
+        self.start_time = time.time()
+
+    def stop(self):
+        """Stop timer and return elapsed time"""
+        stop = time.time()
+        
+        time_elapsed = stop - self.start_time
+
+        self.start_time = None
+
+        return time_elapsed
+
+
