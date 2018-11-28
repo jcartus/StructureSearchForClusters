@@ -1,50 +1,60 @@
 import utilities
 import argparse
+import molecules as database
 import matplotlib.pyplot as plt
 
 import GA as ga
 
 # TODO commandline argument for molecules
 
-Na2 = """
-Na
-Na 1 2.00000
-"""
 
-CH4 = """C
-H   1 1.089000
-H   1 1.089000  2  109.4710
-H   1 1.089000  2  109.4710  3  120.0000
-H   1 1.089000  2  109.4710  3 -120.0000"""
 
-H2O = """
-O
-H 1 1.08
-H 1 1.08 2 109.0
-"""
+def main(data):
 
-def main(zMatrix):
+    molecule_meta = utilities.MoleculeMetaData(*data)
 
-    molecule_meta = utilities.MoleculeMetaData(zMatrix)
+    print("--> Initial Geomety:\n")
+    print(utilities.create_z_matrix(
+        molecule_meta.first_atom,
+        molecule_meta.second_atom,
+        molecule_meta.third_atom,
+        molecule_meta.species,
+        molecule_meta.genome
+    ))
 
     params = {
-        "n_population": 10,
-        "n_fitness_bins": 50,
-        "n_generations": 10,
-        "probability_crossing": 0.5,
+        "n_population": 250,
+        "noise_initial_population": 0.8,
+        "threshold_energy_difference": 1e-8,
+        "n_generations": 300,
+        "tournament_size": 5,
+        "probability_crossing": 0.3,
         "probability_mutation": 0.2,
-
+        "individual_gene_probability_mutation": 0.1,
+        "noise_mutation": 0.5,
+        "fitness_callback": lambda x: utilities.lennard_jones_energy(x, 1, 1)
     }
 
-    energies, bins = ga.find_best_geometry(molecule_meta, params)
+    print("--> Starting Optimization:\n")
+    counter = ga.find_best_geometry(molecule_meta, params)
 
-    utilities.plot_data(energies, bins)
+    print("--> E_min = {0} found {1} times".format(counter.E_min, counter.count))
 
+    print("--> Final geometry: \n")
+    print("zMatrix:")
+    print(utilities.create_z_matrix(
+        molecule_meta.first_atom,
+        molecule_meta.second_atom,
+        molecule_meta.third_atom,
+        molecule_meta.species,
+        counter.best_genome
+    ))
+    print("\nCarthesian:\n")
+
+    utilities.plot_genome(counter.best_genome, molecule_meta)
     plt.show()
-
-
-
     
 if __name__ == '__main__':
-    main(CH4)
+
+    main(database.Be13)
 
