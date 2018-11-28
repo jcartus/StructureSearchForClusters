@@ -152,7 +152,7 @@ def mutate_individual(genome, noise=0.3, gene_mutation_probability=0.3):
         
         mutated_genome.append(mutated_gene)
 
-    return [abs(gene + random.gauss(0, noise * gene)) for gene in genome]
+    return mutated_genome
 
 def rhf_energy(molecule):
     """Perform unrestricted HF calculation to evalute the energy of a molecule.

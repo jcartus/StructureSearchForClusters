@@ -4,8 +4,57 @@ import utilities
 import molecules as database
 
 import unittest
+import numpy as np
 
-class MoleculeMetaData(unittest.TestCase):
+
+class TestGAUtils(unittest.TestCase):
+
+    def test_mutation_deactivated(self):
+        """Mutation probability zero means it genome remains unchanged."""
+        
+        genome = np.random.rand(10)
+
+        # turn off noise for sample to mutate
+        genome_no_mutation = utilities.mutate_individual(genome, 0.0, 1.0)
+        np.testing.assert_array_equal(
+            genome,
+            genome_no_mutation
+        )
+
+        # turn off individual probability for gene mutation
+        genome_no_gene_mutation = utilities.mutate_individual(
+            genome, 
+            np.random.rand(),
+            0.0
+        )
+        np.testing.assert_array_equal(
+            genome,
+            genome_no_gene_mutation
+        )
+
+
+    def test_mutation_values(self):
+        """Test if the mutated values fulfill required properties. """
+
+        genome = \
+            [np.random.rand() + np.random.randint(1, 100) for i in range(10)]
+
+        # mutate all genes
+        noise = np.random.rand()
+        indiv_prob = 1
+        mutated_genome = utilities.mutate_individual(genome, noise, indiv_prob)
+
+        #--- analysis ---
+        # make sure all genes stay positive
+        np.testing.assert_array_less(
+            np.zeros(len(genome)),
+            mutated_genome
+        ) 
+        #---
+
+
+
+class TestMoleculeMetaData(unittest.TestCase):
 
     def setUp(self):
 
