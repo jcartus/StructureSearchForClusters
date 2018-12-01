@@ -185,7 +185,7 @@ class GAStructureOptimisation(object):
             
             #--- print out information on the energy ---
             Logger.log(
-                "Generation {:3i} finished. E_mean = {:3.5f} / Hartree.".format(
+                "Generation {:3d} finished. E_mean = {:3.5f} / Hartree.".format(
                     i+1, 
                     np.mean(fitness_values)
                 )
@@ -201,7 +201,7 @@ class GAStructureOptimisation(object):
             "Operation elapsed in {:2.4f} ms.".format(self._timer.stop()),
             2
         )
-        Logger.log("E_min = {:4.5f} found {:4i} times".format(
+        Logger.log("E_min = {:4.5f} found {:3d} times".format(
             counter.E_min, 
             counter.count
         ), 2)
