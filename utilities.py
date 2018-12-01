@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 from pyscf import gto, scf
 import random, time
+from datetime import datetime   
 
 from deap import tools
 
@@ -52,9 +53,79 @@ class MoleculeMetaData(object):
             self.species.append((split[0], [split[1], split[3], split[5]]))
             self.genome += [float(split[2]), float(split[4]), float(split[6])]
 
+class Logger(object):
+    """Class that displays user massages in a defined format."""
 
+    markers = {
+        1: "[ ]",
+        2: "[-]",
+        3: "[+]"
+    }
+    indentation_marker = " " * 25
 
-class MinEnergyStateCounter(object):
+    log_level = 3
+
+    @staticmethod
+    def _time():
+        return datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ": "
+
+    @classmethod
+    def _prefix(cls, level):
+        return cls.markers[level] + " " + cls._time()
+
+    @classmethod
+    def parse(cls, message):
+        """Make sure line breaks etc. have proper indentation"""
+        
+        return message.replace(
+            "\n", 
+            "\n" + cls.indentation_marker 
+        )
+
+    @classmethod
+    def log(cls, message, level=1):
+        if cls.log_level == 3 or (cls.log_level == 2 and level >= 1) or \
+            (cls.log_level == 1 and level >= 2):
+            print(cls._prefix(level) + cls.parse(message))
+
+    @classmethod
+    def log_zmatrix(cls, comment, meta, genome, level=1):
+        """Used to disp a genome in z-matrix form"""
+        
+        message = comment + "\n\n"
+        message += str(create_z_matrix(
+            meta.first_atom,
+            meta.second_atom,
+            meta.third_atom,
+            meta.species,
+            genome
+        ))
+
+        cls.log(message, level)
+
+    @classmethod
+    def log_carthesian(cls, comment, geometry, level=1):
+        """Used to disp a genome in z-matrix form"""
+        
+        message = comment + "\n\n"
+        for key, positions in geometry.items():
+            for pos in positions:
+                message += "{:2s} {:3.3f} {:3.3f} {:3.3f}\n".format(
+                    key, 
+                    *pos
+                )
+        
+        cls.log(message, level)
+
+    @classmethod
+    def log_params(cls, comment, params, level):
+        msg = comment + "\n\n"
+        for key, value in params.__dict__.items():
+            msg += "{0}: {1}\n".format(key, value)
+
+        cls.log(msg, level)
+
+class Result(object):
 
     def __init__(self, delta):
 
@@ -75,10 +146,10 @@ class MinEnergyStateCounter(object):
             self.best_genome = tools.selBest(population, 1)[0]
 
 
-            print(" - New Minimum found: {:3.5f} (Diff.: {:1.2e})\n".format(
+            Logger.log("New Minimum found: {:3.5f} (Diff.: {:1.2e})".format(
                 self.E_min,
                 E_old - self.E_min
-            ))
+            ), 2)
 
 
 def create_z_matrix(first_atom, second_atom, third_atom, species, genome):
@@ -265,16 +336,16 @@ def plot_genome(genome, molecule_meta):
         stored = positions = geometries.get(species, [])
         stored.append(list(pos))
         geometries.update({species: stored})
-
-        print(species + " " + " ".join(list(map(str, pos))))
     #---
+
+    Logger.log_carthesian("Carthesian coordinates:", geometries)
      
     #--- plot ---
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
     # for python 2 & 3 compatibility
-    for (species, positions) in zip(geometries.keys(), geometries.values()):
+    for (species, positions) in geometries.items():
         
         positions = np.asarray(positions)
 
