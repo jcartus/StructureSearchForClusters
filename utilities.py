@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from pyscf import gto, scf
+from pyscf import gto, scf, dft
 import random, time
 from datetime import datetime   
 
@@ -252,6 +252,37 @@ def uhf_energy(molecule):
     mf = scf.UHF(molecule)
     mf.verbose = 0
     E = mf.scf()
+
+    return E
+
+def rks_energy(molecule, xc="LDA"):
+    """Perform KS dft with LDA functional to evalute the energy of a molecule.
+    
+    Args:
+     - molecule <pyscf.gto.Mole>: molecule to be evaluated.
+
+    Returns:
+     - <float>: energy of the molecule.
+    """
+    mf = dft.RKS(molecule)
+    mf.xc = xc
+    E = mf.kernel()
+
+    return E
+
+def uks_energy(molecule, xc="LDA"):
+    """Perform unrestricted KS dft with LDA functional to evalute the energy 
+    of a molecule.
+
+    Args:
+     - molecule <pyscf.gto.Mole>: molecule to be evaluated.
+
+    Returns:
+     - <float>: energy of the molecule.
+    """
+    mf = dft.UKS(molecule)
+    mf.xc = xc
+    E = mf.kernel()
 
     return E
 
