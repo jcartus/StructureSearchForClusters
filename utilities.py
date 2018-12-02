@@ -248,7 +248,7 @@ def plot_genome(genome, molecule_meta):
         geometries.update({species: stored})
     #---
 
-    Logger.log_carthesian("Carthesian coordinates:", geometries)
+    Logger.log_carthesian("Carthesian coordinates (Bohr):", geometries)
      
     #--- plot ---
     fig = plt.figure()
