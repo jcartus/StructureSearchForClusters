@@ -4,7 +4,7 @@ from deap import base
 from deap import creator
 from deap import tools
 
-import utilities
+import utilities, energy
 from utilities import Logger
 import random
 
@@ -47,7 +47,7 @@ class Params(object):
         individual_gene_probability_mutation=0.1,
         noise_initial_population=0.8,
         noise_mutation=0.2,
-        fitness_callback=utilities.uhf_energy
+        fitness_callback=energy.uhf_energy
     ):
         
         self.size_of_population = size_of_population
@@ -105,10 +105,7 @@ class GAStructureOptimisation(object):
             "init_individual", 
             tools.initIterate, 
             creator.Individual, 
-            lambda: utilities.mutate_individual(
-                meta.genome, 
-                self._params.noise_initial_population
-            )
+            lambda: self.mutate_individual(meta.genome)
         )
 
         toolbox.register(
@@ -122,22 +119,15 @@ class GAStructureOptimisation(object):
         # register fitness function
         toolbox.register(
             "evaluate", 
-            utilities.evaluateFitness, 
-            meta=meta,
-            fitness_callback=self._params.fitness_callback    
+            self.evaluateFitness, 
+            meta=meta    
         )
         
         #--- register genetic functions ---
         toolbox.register("mate", tools.cxTwoPoint)
 
         # alter gene with 0.05 % probability (w/ noise)
-        toolbox.register(
-            "mutate", 
-            utilities.mutate_individual, 
-            noise=self._params.noise_mutation, 
-            gene_mutation_probability=\
-                self._params.individual_gene_probability_mutation
-        )
+        toolbox.register("mutate", self.mutate_individual)
         toolbox.register(
             "select", 
             tools.selTournament, 
@@ -199,7 +189,7 @@ class GAStructureOptimisation(object):
 
             # log number of mutations and matings
             Logger.log(
-                
+
                 "Cross over candidates: {:3d}\n".format(count_cross_over) + \
                 "Mutation candidates:   {:3d}".format(count_mutation_candidates)
             )
@@ -245,3 +235,48 @@ class GAStructureOptimisation(object):
         return counter
 
 
+    def mutate_individual(self, genome):
+        """Add some noise to a genome (and then take the absolute value) 
+        to yield a mutated individual. Absolute value is taken to ensure the 
+        resulting values are valid for z-matrix.
+        Used for mutation and initialisation.
+        
+        Args:
+        - genome <list<float>>: list of genes to be mutated.
+        
+        Returns:
+        - <list<float>>: mutated genome.
+        """
+        
+        mutated_genome = []
+        for gene in genome:
+            
+            if random.random() < \
+                self._params.individual_gene_probability_mutation: 
+                mutated_gene = abs(
+                    gene + \
+                    random.gauss(0, self._params.noise_mutation * gene)
+                )
+            else:
+                mutated_gene = gene
+            
+            mutated_genome.append(mutated_gene)
+
+        return mutated_genome
+
+
+    def evaluateFitness(self, individual, meta):
+        """Calculate the energy of an electron. This will be used as fitness
+        function for the GA."""
+
+        mol = utilities.build_molecule_from_genome(individual, meta)
+        
+        try:
+            E = self._params.fitness_callback(mol)
+        except Exception as ex:
+            print("Problem during SCF calculation: " +  str(ex))
+            E = 1e10
+
+
+        # has to be a tuple (because of syntax of DEAP library)
+        return E,

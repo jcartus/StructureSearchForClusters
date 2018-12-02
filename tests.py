@@ -1,36 +1,47 @@
 """This module contains unit tests."""
 
-import utilities
+import utilities, GA
 import molecules as database
 
 import unittest
 import numpy as np
 
 
-class TestGAUtils(unittest.TestCase):
+class TestGA(unittest.TestCase):
+
+    def setUp(self):
+        utilities.Logger.log_level = 0
 
     def test_mutation_deactivated(self):
         """Mutation probability zero means it genome remains unchanged."""
         
         genome = np.random.rand(10)
 
-        # turn off noise for sample to mutate
-        genome_no_mutation = utilities.mutate_individual(genome, 0.0, 1.0)
+        #--- turn off noise for sample to mutate ---
+        algo = GA.GAStructureOptimisation(GA.Params(
+            noise_mutation=0.0,
+            individual_gene_probability_mutation=1.0
+        ))
+        genome_no_mutation = algo.mutate_individual(genome)
+
         np.testing.assert_array_equal(
             genome,
             genome_no_mutation
         )
+        #---
 
-        # turn off individual probability for gene mutation
-        genome_no_gene_mutation = utilities.mutate_individual(
-            genome, 
-            np.random.rand(),
-            0.0
-        )
+        #--- turn off individual probability for gene mutation---
+        algo = GA.GAStructureOptimisation(GA.Params(
+            noise_mutation=np.random.rand(),
+            individual_gene_probability_mutation=0.0
+        ))
+        genome_no_gene_mutation = algo.mutate_individual(genome)
+
         np.testing.assert_array_equal(
             genome,
             genome_no_gene_mutation
         )
+        #---
 
 
     def test_mutation_values_positive(self):
@@ -42,7 +53,12 @@ class TestGAUtils(unittest.TestCase):
         # mutate all genes
         noise = np.random.rand()
         indiv_prob = 1
-        mutated_genome = utilities.mutate_individual(genome, noise, indiv_prob)
+        algo = GA.GAStructureOptimisation(GA.Params(
+            noise_mutation=noise,
+            individual_gene_probability_mutation=indiv_prob
+        ))
+        
+        mutated_genome = algo.mutate_individual(genome)
 
         #--- analysis ---
         # make sure all genes stay positive
@@ -61,7 +77,12 @@ class TestGAUtils(unittest.TestCase):
         # mutate all genes
         noise = np.random.rand()
         indiv_prob = 1
-        mutated_genome = utilities.mutate_individual(genome, noise, indiv_prob)
+        algo = GA.GAStructureOptimisation(GA.Params(
+            noise_mutation=noise,
+            individual_gene_probability_mutation=indiv_prob
+        ))
+        
+        mutated_genome = algo.mutate_individual(genome)
 
         #--- analysis ---
         # make sure mean is still the old genome
