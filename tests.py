@@ -33,7 +33,7 @@ class TestGAUtils(unittest.TestCase):
         )
 
 
-    def test_mutation_values(self):
+    def test_mutation_values_positive(self):
         """Test if the mutated values fulfill required properties. """
 
         genome = \
@@ -51,6 +51,36 @@ class TestGAUtils(unittest.TestCase):
             mutated_genome
         ) 
         #---
+
+    def test_mutation_values_distribution(self):
+        """Test if the mutated values fulfill required properties. """
+
+        mu = np.random.randint(10)
+        genome = [mu] * int(1e4) 
+
+        # mutate all genes
+        noise = np.random.rand()
+        indiv_prob = 1
+        mutated_genome = utilities.mutate_individual(genome, noise, indiv_prob)
+
+        #--- analysis ---
+        # make sure mean is still the old genome
+        np.testing.assert_allclose(
+            mu,
+            np.mean(mutated_genome),
+            atol=5e-1
+        ) 
+
+        # make sure the scatter as planned
+        np.testing.assert_allclose(
+            noise * mu,
+            np.std(mutated_genome),
+            atol=5e-1
+        )
+        #---
+
+
+
 
 
 
