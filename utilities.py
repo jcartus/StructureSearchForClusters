@@ -1,3 +1,10 @@
+"""This module contains helper functions and utilities, to 
+encode and later decode and display molecular information.
+
+Author:
+ - Johannes Cartus, TU Graz
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -12,6 +19,11 @@ plt.style.use("seaborn")
 
 
 class MoleculeMetaData(object):
+    """This class is used to encode information extracted during 
+    the creation of the first genome and needed to set other genomes 
+    back together to a zmatrix.
+    """
+
     def __init__(self, basis, zMatrix):
         
         self.basis = basis
@@ -26,7 +38,9 @@ class MoleculeMetaData(object):
         self.calculate_genome(zMatrix)
             
     def calculate_genome(self, matrix_str):
-        
+        """Extracts a genome from a z-matrix string"""
+
+
         lines =[line for line in matrix_str.split("\n") if line]
 
         if len(lines) < 4:
@@ -84,13 +98,14 @@ class Logger(object):
 
     @classmethod
     def log(cls, message, level=1):
+        """Write a user message to console."""
         if cls.log_level == 3 or (cls.log_level == 2 and level >= 1) or \
             (cls.log_level == 1 and level >= 2):
             print(cls._prefix(level) + cls.parse(message))
 
     @classmethod
     def log_zmatrix(cls, comment, meta, genome, level=1):
-        """Used to disp a genome in z-matrix form"""
+        """Used to disp a genome in z-matrix form."""
         
         message = comment + "\n\n"
         message += str(create_z_matrix(
@@ -105,7 +120,7 @@ class Logger(object):
 
     @classmethod
     def log_carthesian(cls, comment, geometry, level=1):
-        """Used to disp a genome in z-matrix form"""
+        """Used to disp a genome in carthesian coordinates."""
         
         message = comment + "\n\n"
         for key, positions in geometry.items():
@@ -119,6 +134,7 @@ class Logger(object):
 
     @classmethod
     def log_params(cls, comment, params, level):
+        """Used to disp a GA.Parameters object to console."""
         msg = comment + "\n\n"
         for key, value in params.__dict__.items():
             msg += "{0}: {1}\n".format(key, value)
@@ -126,6 +142,15 @@ class Logger(object):
         cls.log(msg, level)
 
 class Result(object):
+    """This class is sued to scan the states found during structure search 
+    and to record the best of them and how often they were found.
+
+    Attributes:
+        - best_genome <list>: best state found so far
+        - E_min <float>: fitness of this best state
+        - delta <float>: tolerance, how close state fintess values can be 
+        and not be recognized as differing.
+    """
 
     def __init__(self, delta):
 
@@ -136,6 +161,9 @@ class Result(object):
         self.best_genome = None
 
     def update(self, energies, population):
+        """Checks the population and their fitness values (energies) for a 
+        new minimum state. If one is found it is stored
+        """
 
         if np.abs(np.min(energies) - self.E_min) < self.delta:
             self.count += 1
@@ -196,17 +224,14 @@ def build_molecule_from_genome(genome, meta):
     
     return mol
 
-def calculate_fitness_distribution(energies, bins):
-    """Calculate how often energies appear (histogram)"""
-
-    fitness_distribution = np.histogram(
-        np.array(energies).flatten(), 
-        bins=bins, 
-    )[0]
-
-    return fitness_distribution
-
 def plot_genome(genome, molecule_meta):
+    """Display the final results, by logging the coordinates and 
+    creating a 3D plot of the result.
+    
+    Args:
+        - genome <list>: found best state.
+        - molecule_meta <utilities.MoleMoleculeMetaData>: meta information
+    """
     from mpl_toolkits.mplot3d import Axes3D
     
     #--- calculate carthsian coordinates of final genome ---
@@ -250,15 +275,6 @@ def plot_genome(genome, molecule_meta):
     ax.legend()
     ax.set_title("Minimum Geometry")
     #---
-
-def plot_data(distribution):
-    bins = np.asarray(distribution.bins)
-    x = (bins[:-1] + bins[1:]) / 2
-    #x = bins[:-1]
-
-    plt.bar(x, distribution.energies, width=0.8*distribution.energy_diff)
-    plt.xlabel("Energies / E_h")
-    plt.ylabel("Absolute frequency / 1")
 
 
 class Timer(object):

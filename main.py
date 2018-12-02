@@ -1,4 +1,10 @@
-import utilities
+"""This is the main script, used to start and controll the algorithm. 
+
+Author:
+ - Johannes Cartus, TU Graz
+"""
+
+import utilities, energy
 import argparse
 import molecules as database
 import matplotlib.pyplot as plt
@@ -17,13 +23,14 @@ def main(data):
     params = ga.Params(
         number_of_generations=30,
         size_of_population=300,
-        noise_initial_population=0.8,
+        noise_initial_population=2.0,
+        probability_crossing=0.5,
         probability_mutation=0.5,
-        individual_gene_probability_mutation=0.1,
-        noise_mutation=0.2,
-        #fitness_callback=lambda x: utilities.lennard_jones_energy(x, 5, 1.5)
-        #fitness_callback=utilities.rhf_energy
-        fitness_callback=utilities.uhf_energy
+        individual_gene_probability_mutation=0.5,
+        noise_mutation=1.0,
+        fitness_callback=lambda x: energy.lennard_jones_energy(x, 5, 1.1)
+        #fitness_callback=energy.rhf_energy
+        #fitness_callback=energy.uhf_energy
     )
 
     algo = ga.GAStructureOptimisation(params)
@@ -35,5 +42,5 @@ def main(data):
     
 if __name__ == '__main__':
 
-    main(database.Ethen)
+    main(database.Be13)
 

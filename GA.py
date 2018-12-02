@@ -1,3 +1,9 @@
+"""This module contains the components of the genetic algorithm. 
+
+Author:
+ - Johannes Cartus, TU Grazs
+"""
+
 import numpy as np
 
 from deap import base
