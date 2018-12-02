@@ -1,0 +1,148 @@
+[-] 2018-12-02 14:23:15: Algorithm Parameters: 
+                         
+                         size_of_population: 300
+                         number_of_generations: 30
+                         threshold_energy_difference: 1e-08
+                         tournament_size: 3
+                         probability_crossing: 0.5
+                         probability_mutation: 0.5
+                         individual_gene_probability_mutation: 0.5
+                         noise_mutation: 1.0
+                         noise_initial_population: 2.0
+                         fitness_callback: <function main.<locals>.<lambda> at 0x7f3cb801cf28>
+                         
+[+] 2018-12-02 14:23:15: Optimisation started.
+[ ] 2018-12-02 14:23:15: Initial geometry:
+                         
+                         C
+                         C 1 1.97772
+                         H 1 1.25551 2 130.83409
+                         H 1 0.76962 2 87.04928 3 209.47773
+                         H 2 1.19496 1 111.33113 3 20.61367
+                         H 2 1.25857 1 93.30201 3 134.19734
+                         
+[ ] 2018-12-02 14:23:20: Initial population     E_min = 14462.65567 / Hartree
+[-] 2018-12-02 14:23:20: New Minimum found: 14462.65567 (Diff.: 1.00e+10)
+[ ] 2018-12-02 14:23:20: Cross over candidates:  73
+                         Mutation candidates:   141
+[ ] 2018-12-02 14:23:24: Generation   1 finished. E_mean = 34007202550743.29297 / Hartree.
+[-] 2018-12-02 14:23:24: New Minimum found: 13893.70561 (Diff.: 5.69e+02)
+[ ] 2018-12-02 14:23:24: Cross over candidates:  73
+                         Mutation candidates:   159
+[ ] 2018-12-02 14:23:28: Generation   2 finished. E_mean = 23670906449.67650 / Hartree.
+[-] 2018-12-02 14:23:28: New Minimum found: 690.56630 (Diff.: 1.32e+04)
+[ ] 2018-12-02 14:23:28: Cross over candidates:  80
+                         Mutation candidates:   156
+[ ] 2018-12-02 14:23:32: Generation   3 finished. E_mean = 823171028918.32837 / Hartree.
+[-] 2018-12-02 14:23:32: New Minimum found: 686.94681 (Diff.: 3.62e+00)
+[ ] 2018-12-02 14:23:32: Cross over candidates:  74
+                         Mutation candidates:   158
+[ ] 2018-12-02 14:23:36: Generation   4 finished. E_mean = 17657742.14316 / Hartree.
+[-] 2018-12-02 14:23:36: New Minimum found: 143.48379 (Diff.: 5.43e+02)
+[ ] 2018-12-02 14:23:36: Cross over candidates:  72
+                         Mutation candidates:   143
+[ ] 2018-12-02 14:23:40: Generation   5 finished. E_mean = 1779808.80582 / Hartree.
+[-] 2018-12-02 14:23:40: New Minimum found: 76.21714 (Diff.: 6.73e+01)
+[ ] 2018-12-02 14:23:40: Cross over candidates:  85
+                         Mutation candidates:   138
+[ ] 2018-12-02 14:23:44: Generation   6 finished. E_mean = 11697379.18385 / Hartree.
+[-] 2018-12-02 14:23:44: New Minimum found: -0.94812 (Diff.: 7.72e+01)
+[ ] 2018-12-02 14:23:44: Cross over candidates:  67
+                         Mutation candidates:   137
+[ ] 2018-12-02 14:23:47: Generation   7 finished. E_mean = 14394.20224 / Hartree.
+[-] 2018-12-02 14:23:47: New Minimum found: -0.97749 (Diff.: 2.94e-02)
+[ ] 2018-12-02 14:23:47: Cross over candidates:  77
+                         Mutation candidates:   138
+[ ] 2018-12-02 14:23:51: Generation   8 finished. E_mean = 13976.43413 / Hartree.
+[ ] 2018-12-02 14:23:51: Cross over candidates:  68
+                         Mutation candidates:   128
+[ ] 2018-12-02 14:23:54: Generation   9 finished. E_mean = 15290.06141 / Hartree.
+[ ] 2018-12-02 14:23:54: Cross over candidates:  68
+                         Mutation candidates:   152
+[ ] 2018-12-02 14:23:58: Generation  10 finished. E_mean = 39.88176 / Hartree.
+[ ] 2018-12-02 14:23:58: Cross over candidates:  71
+                         Mutation candidates:   145
+[ ] 2018-12-02 14:24:02: Generation  11 finished. E_mean = 18.20312 / Hartree.
+[-] 2018-12-02 14:24:02: New Minimum found: -0.98569 (Diff.: 8.21e-03)
+[ ] 2018-12-02 14:24:02: Cross over candidates:  74
+                         Mutation candidates:   156
+[ ] 2018-12-02 14:24:06: Generation  12 finished. E_mean = 1.90945 / Hartree.
+[-] 2018-12-02 14:24:06: New Minimum found: -1.25816 (Diff.: 2.72e-01)
+[ ] 2018-12-02 14:24:06: Cross over candidates:  81
+                         Mutation candidates:   158
+[ ] 2018-12-02 14:24:10: Generation  13 finished. E_mean = -0.82328 / Hartree.
+[ ] 2018-12-02 14:24:10: Cross over candidates:  78
+                         Mutation candidates:   138
+[ ] 2018-12-02 14:24:13: Generation  14 finished. E_mean = -0.97147 / Hartree.
+[-] 2018-12-02 14:24:13: New Minimum found: -1.35125 (Diff.: 9.31e-02)
+[ ] 2018-12-02 14:24:13: Cross over candidates:  79
+                         Mutation candidates:   155
+[ ] 2018-12-02 14:24:17: Generation  15 finished. E_mean = -0.99519 / Hartree.
+[ ] 2018-12-02 14:24:17: Cross over candidates:  70
+                         Mutation candidates:   151
+[ ] 2018-12-02 14:24:21: Generation  16 finished. E_mean = -1.02121 / Hartree.
+[-] 2018-12-02 14:24:21: New Minimum found: -1.44919 (Diff.: 9.79e-02)
+[ ] 2018-12-02 14:24:21: Cross over candidates:  73
+                         Mutation candidates:   139
+[ ] 2018-12-02 14:24:24: Generation  17 finished. E_mean = -1.09252 / Hartree.
+[-] 2018-12-02 14:24:24: New Minimum found: -1.65742 (Diff.: 2.08e-01)
+[ ] 2018-12-02 14:24:24: Cross over candidates:  78
+                         Mutation candidates:   158
+[ ] 2018-12-02 14:24:28: Generation  18 finished. E_mean = -1.21623 / Hartree.
+[ ] 2018-12-02 14:24:28: Cross over candidates:  85
+                         Mutation candidates:   151
+[ ] 2018-12-02 14:24:32: Generation  19 finished. E_mean = -1.39703 / Hartree.
+[ ] 2018-12-02 14:24:32: Cross over candidates:  63
+                         Mutation candidates:   144
+[ ] 2018-12-02 14:24:36: Generation  20 finished. E_mean = -1.53280 / Hartree.
+[ ] 2018-12-02 14:24:36: Cross over candidates:  72
+                         Mutation candidates:   151
+[ ] 2018-12-02 14:24:40: Generation  21 finished. E_mean = -1.61720 / Hartree.
+[ ] 2018-12-02 14:24:40: Cross over candidates:  67
+                         Mutation candidates:   133
+[ ] 2018-12-02 14:24:43: Generation  22 finished. E_mean = -1.65414 / Hartree.
+[ ] 2018-12-02 14:24:43: Cross over candidates:  84
+                         Mutation candidates:   153
+[ ] 2018-12-02 14:24:47: Generation  23 finished. E_mean = -1.65742 / Hartree.
+[ ] 2018-12-02 14:24:47: Cross over candidates:  69
+                         Mutation candidates:   152
+[ ] 2018-12-02 14:24:51: Generation  24 finished. E_mean = -1.65742 / Hartree.
+[ ] 2018-12-02 14:24:51: Cross over candidates:  76
+                         Mutation candidates:   148
+[ ] 2018-12-02 14:24:54: Generation  25 finished. E_mean = -1.65742 / Hartree.
+[ ] 2018-12-02 14:24:54: Cross over candidates:  75
+                         Mutation candidates:   137
+[ ] 2018-12-02 14:24:58: Generation  26 finished. E_mean = -1.65742 / Hartree.
+[ ] 2018-12-02 14:24:58: Cross over candidates:  78
+                         Mutation candidates:   163
+[ ] 2018-12-02 14:25:02: Generation  27 finished. E_mean = -1.65742 / Hartree.
+[ ] 2018-12-02 14:25:02: Cross over candidates:  85
+                         Mutation candidates:   158
+[ ] 2018-12-02 14:25:06: Generation  28 finished. E_mean = -1.65742 / Hartree.
+[ ] 2018-12-02 14:25:06: Cross over candidates:  69
+                         Mutation candidates:   140
+[ ] 2018-12-02 14:25:10: Generation  29 finished. E_mean = -1.65742 / Hartree.
+[ ] 2018-12-02 14:25:10: Cross over candidates:  63
+                         Mutation candidates:   143
+[ ] 2018-12-02 14:25:13: Generation  30 finished. E_mean = -1.65742 / Hartree.
+[+] 2018-12-02 14:25:13: Optimisation finished.
+[-] 2018-12-02 14:25:13: Operation elapsed in 117.9066 ms.
+[-] 2018-12-02 14:25:13: E_min = -1.65742 found  14 times
+[-] 2018-12-02 14:25:13: Best Geometry:
+                         
+                         C
+                         C 1 5.220630210956157
+                         H 1 3.1455204716891627 2 253.91947978756212
+                         H 1 2.7303742391581363 2 87.04928 3 209.47773
+                         H 2 3.3078045025872362 1 48.88502144706921 3 40.84876078554788
+                         H 2 2.9456454506436147 1 37.61667043710568 3 134.19734
+                         
+[ ] 2018-12-02 14:25:13: Carthesian coordinates:
+                         
+                         C  0.000 0.000 0.000
+                         C  9.866 0.000 0.000
+                         H  -1.646 0.000 -5.712
+                         H  0.266 2.536 4.486
+                         H  5.755 3.080 -3.562
+                         H  5.456 2.436 2.369
+                         
