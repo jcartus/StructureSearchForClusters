@@ -13,8 +13,27 @@ class Params(object):
     
     Attributes:
      - size_of_population <int>: number individuals in one generation.
-     - number_of_generations <int>:
-    
+     - number_of_generations <int>: number of generations to run the 
+        algorithm for.
+     - threshold_energy_difference <float>: to check if the energy of a new 
+        geometry is lower than that of other the difference must be greater than
+        this threshold.
+     - tournament_size <int>: for next generation out of three tournament_size
+        individuals the best will be picked.
+     - probability_crossing <float>: the probability for an individual to be 
+        mated with another (random) individual of the population.
+     - probability_mutation <float>: the probability for an individual to 
+        be selected for mutation.
+     - individual_gene_probability_mutation <float>: the probability for 
+        each gene to be mutated, once an individual was selected for mutation.
+     - noise_initial_population <float>: the fraction of the value of a gene
+        used as standard deviation for the distribution from which the 
+        individuals for the initial population are drawn.
+     - noise_mutation <float>: the fraction of the value of a gene used as 
+        standard deviation for the normal distribution from which deviantion 
+        to the original values are drawn in order to mutate the gene.
+     - fitness_callback <function>: function that takes a molecule and returns
+        an energy value for it (e.g. via DFT calculation).
     """
 
     def __init__(
@@ -150,11 +169,14 @@ class GAStructureOptimisation(object):
         # Begin the evolution
         for i in range(self._params.number_of_generations):
 
-            # Select next generation
+            # Select next generation (via turnament)
             offspring = toolbox.select(population, len(population))
             offspring = list(map(toolbox.clone, offspring))
+            
+            # shuffle the elements, so cross over is between random individuals
+            random.shuffle(offspring)
 
-            # do cross over
+            # do cross over (cross neighbours)
             count_cross_over = 0
             for child1, child2 in zip(offspring[::2], offspring[1::2]):
 
@@ -175,7 +197,9 @@ class GAStructureOptimisation(object):
             
                     count_mutation_candidates += 1
 
+            # log number of mutations and matings
             Logger.log(
+                
                 "Cross over candidates: {:3d}\n".format(count_cross_over) + \
                 "Mutation candidates:   {:3d}".format(count_mutation_candidates)
             )
