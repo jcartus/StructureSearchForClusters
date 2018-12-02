@@ -155,6 +155,7 @@ class GAStructureOptimisation(object):
             offspring = list(map(toolbox.clone, offspring))
 
             # do cross over
+            count_cross_over = 0
             for child1, child2 in zip(offspring[::2], offspring[1::2]):
 
                 if random.random() < self._params.probability_crossing:
@@ -162,13 +163,23 @@ class GAStructureOptimisation(object):
 
                     del child1.fitness.values
                     del child2.fitness.values
+
+                    count_cross_over += 1
                     
             # do mutation
+            count_mutation_candidates = 0
             for mutant in offspring:
                 if random.random() < self._params.probability_mutation: 
                     toolbox.mutate(mutant)
                     del mutant.fitness.values
             
+                    count_mutation_candidates += 1
+
+            Logger.log(
+                "Cross over candidates: {:3d}\n".format(count_cross_over) + \
+                "Mutation candidates:   {:3d}".format(count_mutation_candidates)
+            )
+
             # recalculate fitness values of mates and mutants
             invalid_individuals = \
                 [ind for ind in offspring if not ind.fitness.valid]
