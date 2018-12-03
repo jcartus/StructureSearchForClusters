@@ -1,0 +1,202 @@
+/home/jo/anaconda3/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+--> Initial Geomety:
+
+C
+C 1 1.97772
+H 1 1.25551 2 130.83409
+H 3 1.56962 1 67.04928 2 299.47773
+H 2 1.19496 1 71.33113 3 184.61367
+H 2 1.25857 1 93.30201 3 74.19734
+
+--> Parameters: 
+
+{'n_population': 300, 'noise_initial_population': 0.2, 'threshold_energy_difference': 1e-08, 'n_generations': 50, 'tournament_size': 3, 'probability_crossing': 0.3, 'probability_mutation': 0.5, 'individual_gene_probability_mutation': 0.5, 'noise_mutation': 0.2, 'fitness_callback': <function uhf_energy at 0x7f6c808beae8>}
+
+--> Starting Optimization:
+
+ - New Minimum found: -76.69318 (Diff.: 1.00e+10)
+
+Initial population minimal energy: (-76.69318345029853,) / Hartree
+Generation 1 finished.
+ - E_mean = -76.59797477115475 / Hartree
+
+ - New Minimum found: -76.72107 (Diff.: 2.79e-02)
+
+Generation 2 finished.
+ - E_mean = -76.62449046676498 / Hartree
+
+Generation 3 finished.
+ - E_mean = -76.64812455288077 / Hartree
+
+ - New Minimum found: -76.73140 (Diff.: 1.03e-02)
+
+Generation 4 finished.
+ - E_mean = -76.66804047951604 / Hartree
+
+Generation 5 finished.
+ - E_mean = -76.68597026867188 / Hartree
+
+Generation 6 finished.
+ - E_mean = -76.70172162787057 / Hartree
+
+Generation 7 finished.
+ - E_mean = -76.71542029515835 / Hartree
+
+ - New Minimum found: -76.73943 (Diff.: 8.03e-03)
+
+Generation 8 finished.
+ - E_mean = -76.72407211953265 / Hartree
+
+ - New Minimum found: -76.74586 (Diff.: 6.43e-03)
+
+Generation 9 finished.
+ - E_mean = -76.72977216781703 / Hartree
+
+ - New Minimum found: -76.74657 (Diff.: 7.11e-04)
+
+Generation 10 finished.
+ - E_mean = -76.73374463885425 / Hartree
+
+Generation 11 finished.
+ - E_mean = -76.73735314337777 / Hartree
+
+Generation 12 finished.
+ - E_mean = -76.74183547843077 / Hartree
+
+Generation 13 finished.
+ - E_mean = -76.74515431263055 / Hartree
+
+Generation 14 finished.
+ - E_mean = -76.74628583867595 / Hartree
+
+Generation 15 finished.
+ - E_mean = -76.74654403578427 / Hartree
+
+Generation 16 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 17 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 18 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 19 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 20 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 21 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 22 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 23 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 24 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 25 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 26 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 27 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 28 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 29 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 30 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 31 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 32 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 33 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 34 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 35 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 36 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 37 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 38 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 39 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 40 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 41 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 42 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 43 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 44 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 45 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 46 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 47 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 48 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 49 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+Generation 50 finished.
+ - E_mean = -76.74656772897305 / Hartree
+
+
+--> Optimization elapsed in 1952.6849482059479 ms
+--> E_min = -76.74656772897308 found 42 times
+--> Final geometry: 
+
+zMatrix:
+C
+C 1 1.97772
+H 1 1.0885782227528653 2 183.2054572906272
+H 3 1.56962 1 44.948867056787606 2 299.47773
+H 2 1.19496 1 91.87832444658267 3 184.61367
+H 2 1.25857 1 93.30201 3 74.19734
+
+
+Carthesian:
+
+C 0.0 0.0 0.0
+C 3.737349151074814 0.0 0.0
+H -2.053896232510228 0.0 -0.11502686823437461
+H 0.0997360423262021 1.8242430611357079 -1.0272014617547336
+H 3.8113646071919747 -0.18154039725319399 2.2496206916480976
+H 3.8743400015884535 2.284664293072698 -0.6466093918582931
