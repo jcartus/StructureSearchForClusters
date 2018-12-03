@@ -51,6 +51,7 @@ def rks_energy(molecule, xc="LDA"):
      - <float>: energy of the molecule.
     """
     mf = dft.RKS(molecule)
+    mf.verbose = 0
     mf.xc = xc
     E = mf.kernel()
 
@@ -67,6 +68,7 @@ def uks_energy(molecule, xc="LDA"):
      - <float>: energy of the molecule.
     """
     mf = dft.UKS(molecule)
+    mf.verbose = 0
     mf.xc = xc
     E = mf.kernel()
 
