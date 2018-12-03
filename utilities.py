@@ -217,7 +217,7 @@ def build_molecule_from_genome(genome, meta):
         genome
     )
 
-    mol.unit = "Angstrom"
+    mol.unit = "angstrom"
     mol.basis = meta.basis
     
     mol.build()
